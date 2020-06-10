@@ -1,0 +1,18 @@
+timeout: 1800s
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'asia.gcr.io/$PROJECT_ID/nest-temp:$TAG_NAME', '.']
+  id: 'build-gcr'
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'asia.gcr.io/$PROJECT_ID/nest-temp:$TAG_NAME']
+  id: 'push-gcr'
+  waitFor:
+  - 'build-gcr'
+- name: 'gcr.io/cloud-builders/kubectl'
+  args: ['set', 'image','deployment/${_DEPLOYMENTNAME}','${_CONTAINERNAME}=asia.gcr.io/$PROJECT_ID/nest-temp:$TAG_NAME', '--record']
+  id: 'update-gke'
+  env:
+  - 'CLOUDSDK_COMPUTE_ZONE=${_ZONE}'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=${_CLUSTER}'
+  waitFor:
+  - 'push-gcr'
