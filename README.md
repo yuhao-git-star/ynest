@@ -10,6 +10,7 @@
 * `docker`, `docker compose`
 * `env`
 * `redis`
+* `winston`
 * `middleware log`
 * `bitbucket pipelines`
 * `GCP Cloud Build`

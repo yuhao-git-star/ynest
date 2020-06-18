@@ -5,8 +5,7 @@ import { Apiv1Module } from './apiv1/apiv1.module';
 import { Apiv2Module } from './apiv2/apiv2.module';
 import * as fs from 'fs';
 import path = require('path');
-import { PATH_METADATA } from '@nestjs/common/constants';
-import { UserController } from './apiv1/user/user.controller';
+import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 
 const ENV = process.env.NODE_ENV || 'development';
 console.log(`NODE_ENV: ${ENV}`);
@@ -15,7 +14,6 @@ declare const module: any;
 
 async function bootstrap() {
   const app = await NestFactory.create<NestApplication>(AppModule);
-
   const options = new DocumentBuilder()
     .setTitle('xxxx API Services')
     .setDescription('xxxx API Services')
