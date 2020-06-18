@@ -2,6 +2,7 @@ import * as dotenv from 'dotenv';
 import * as Joi from 'joi';
 import * as fs from 'fs';
 import { Logger } from '@nestjs/common';
+import { LoggerOptions } from 'typeorm/logger/LoggerOptions';
 
 export interface EnvConfig {
   [key: string]: string;
@@ -31,7 +32,7 @@ export class ConfigService {
       DB_PASSWORD: Joi.string().default('localhost'),
       DB_NAME: Joi.string().default('localhost'),
       DB_TYPEORM_SYNC: Joi.boolean().default(false),
-      DB_TYPEORM_LOG: Joi.boolean().default(true),
+      DB_TYPEORM_LOG: Joi.array().default(['all']),
       REDIS_PORT: Joi.number().default(process.env.REDISPORT || 6379),
       REDIS_URL: Joi.string().default(process.env.REDISHOST || 'localhost'),
       ELASRIC_HOST: Joi.string().default(''),
@@ -100,8 +101,8 @@ export class ConfigService {
     return Boolean(this.envConfig.DB_TYPEORM_SYNC);
   }
 
-  get dbLogging(): boolean {
-    return Boolean(this.envConfig.DB_TYPEORM_LOG);
+  get dbLogging(): LoggerOptions {
+    return this.envConfig.DB_TYPEORM_LOG as LoggerOptions;
   }
 
   get redisPort(): number {
