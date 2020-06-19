@@ -10,6 +10,8 @@ import { HttpLoggerMiddleware } from './middleware/http-logger.middleware';
 import { AuthModule } from './auth/auth.module';
 import { utilities as nestWinstonModuleUtilities, WinstonModule } from 'nest-winston';
 import { APPWinstonModule } from './winston/appwinston.module';
+import { APP_FILTER } from '@nestjs/core';
+import { HttpFilterFilter } from './filter/http-filter.filter';
 
 const routes: Routes = [
   {
@@ -37,7 +39,12 @@ const routes: Routes = [
     Apiv2Module,
     WinstonModule,
   ],
-  providers: [],
+  providers: [
+    {
+      provide: APP_FILTER,
+      useClass: HttpFilterFilter,
+    },
+  ],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

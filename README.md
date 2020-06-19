@@ -5,13 +5,14 @@
 * `elasticsearch`
 * `typeorm`
 * `Socket.io`
-* `jwt`
+* `jwt`, `passport`
+* `winston`
+* `Custom Exception filters`
+* `middleware log`
 * `api-versioning`, `swagger`
 * `docker`, `docker compose`
 * `env`
 * `redis`
-* `winston`
-* `middleware log`
 * `bitbucket pipelines`
 * `GCP Cloud Build`
 * ``
