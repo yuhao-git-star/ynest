@@ -16,13 +16,13 @@ export class HttpFilterFilter<T> implements ExceptionFilter {
       response
         .status(status)
         .json(
-          ApiResponseService.generateResponse(null, exception.message, false, status, 0)
+          ApiResponseService.generateResponse(exception.getResponse(), exception.message, false, status, 0)
         );
-    } catch {
+    } catch(err) {
       response
         .status(HttpStatus.INTERNAL_SERVER_ERROR)
         .json(
-          ApiResponseService.generateResponse(null, exception.message, false, HttpStatus.INTERNAL_SERVER_ERROR, 0)
+          ApiResponseService.generateResponse(err, exception.message, false, HttpStatus.INTERNAL_SERVER_ERROR, 0)
         );
     }
   }

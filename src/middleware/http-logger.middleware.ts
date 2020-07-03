@@ -1,6 +1,7 @@
 import { Injectable, NestMiddleware, Logger, Inject, LoggerService } from '@nestjs/common';
 import { AppRequest, AppResponse } from '../interface/user-id.interface';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
+import { v4 } from 'uuid';
 
 @Injectable()
 export class HttpLoggerMiddleware implements NestMiddleware {
@@ -26,6 +27,9 @@ export class HttpLoggerMiddleware implements NestMiddleware {
         body: req.body
       }
       this.loggerWinston.log(message, 'HttpRequest');
+
+      // 寫入全鏈路追蹤代號
+      req.trackingId = v4();
     } catch(err) {
       this.logger.error(err)
     }
