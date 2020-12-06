@@ -1,6 +1,6 @@
 {
   "name": "@klearthinkk/create-ktnest-temp",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "new nest.js project from klearthinkk",
   "keywords": [
     "nestjs",
