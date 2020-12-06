@@ -13,7 +13,7 @@
   },
   "author": "yasuoyuhao <yasuoyuhao@klearthink.com>",
   "bin": {
-    "create-yu-nestjs-temp-create": "./dist/index.js"
+    "create-ktnest-temp": "./dist/index.js"
   },
   "license": "MIT",
   "private": false,
