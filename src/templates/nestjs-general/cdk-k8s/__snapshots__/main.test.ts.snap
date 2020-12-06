@@ -1,0 +1,58 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Placeholder Empty 1`] = `
+Array [
+  Object {
+    "apiVersion": "apps/v1",
+    "kind": "Deployment",
+    "metadata": Object {
+      "name": "test-chart-deployment-c8d4e901",
+    },
+    "spec": Object {
+      "replicas": 2,
+      "selector": Object {
+        "matchLabels": Object {
+          "app": "nest-temp-k8s",
+        },
+      },
+      "template": Object {
+        "metadata": Object {
+          "labels": Object {
+            "app": "nest-temp-k8s",
+          },
+        },
+        "spec": Object {
+          "containers": Array [
+            Object {
+              "env": Array [
+                Object {
+                  "name": "NODE_ENV",
+                  "value": "test",
+                },
+                Object {
+                  "name": "PORT",
+                  "value": "80",
+                },
+              ],
+              "image": "yasuoyuhao/nest-temp",
+              "imagePullPolicy": "Always",
+              "name": "nest-temp",
+              "ports": Array [
+                Object {
+                  "containerPort": 80,
+                },
+              ],
+              "resources": Object {
+                "limits": Object {
+                  "cpu": "500m",
+                  "memory": "256Mi",
+                },
+              },
+            },
+          ],
+        },
+      },
+    },
+  },
+]
+`;

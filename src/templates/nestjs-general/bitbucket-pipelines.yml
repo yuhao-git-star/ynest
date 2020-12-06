@@ -1,0 +1,58 @@
+# This is a sample build configuration for JavaScript.
+# Check our guides at https://confluence.atlassian.com/x/14UWN for more examples.
+# Only use spaces to indent your .yml configuration.
+# -----
+# You can specify a custom docker image from Docker Hub as your build environment.
+
+image: node:12
+
+clone:
+  depth: full    # SonarCloud scanner needs the full history to assign issues properly
+
+definitions:
+  services:
+    docker:
+      memory: 2048
+  caches:
+    sonar: ~/.sonar/cache  # Caching SonarCloud artifacts will speed up your build
+  steps:
+    - step: &build-test-sonarcloud
+        name: Build, test and analyze on SonarCloud
+        caches:
+          - sonar
+          - node
+        services:
+          - docker
+        script:
+          - yarn install
+          - yarn build
+          - yarn test:cov
+          - pipe: sonarsource/sonarcloud-scan:1.2.0
+            variables:
+              SONAR_TOKEN: ${SONAR_TOKEN}
+              EXTRA_ARGS: '-Dsonar.sources=src -Dsonar.tests=src -Dsonar.test.inclusions="**/testing/**,**/*.spec.ts" -Dsonar.typescript.lcov.reportPaths=src/coverage/lcov.info'
+pipelines:
+  default:
+    - step: *build-test-sonarcloud
+        
+  branches:
+    develop:
+      - step: *build-test-sonarcloud
+      - step:
+          name: deploy with tag
+          script:
+            # - apt-get update
+            # - apt-get install -y unzip git
+            - echo "Clone all the things!"
+            - git tag -am "Tagging Client for release ${BITBUCKET_BUILD_NUMBER}" v${BITBUCKET_BUILD_NUMBER}
+            - git push origin v${BITBUCKET_BUILD_NUMBER}
+    master:
+      - step: *build-test-sonarcloud
+      - step:
+          name: deploy with tag
+          script:
+            # - apt-get update
+            # - apt-get install -y unzip git
+            - echo "Clone all the things!"
+            - git tag -am "Tagging App for release ${BITBUCKET_BUILD_NUMBER}" release${BITBUCKET_BUILD_NUMBER}
+            - git push origin release${BITBUCKET_BUILD_NUMBER}

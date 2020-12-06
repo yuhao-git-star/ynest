@@ -1,0 +1,61 @@
+version: v1beta9
+images:
+  app:
+    image: yasuoyuhao/nest-temp
+    preferSyncOverRebuild: true
+    injectRestartHelper: false
+    appendDockerfileInstructions:
+    - USER root
+    build:
+      docker:
+        skipPush: true
+deployments:
+- name: nest-temp
+  helm:
+    componentChart: true
+    values:
+      containers:
+      - image: yasuoyuhao/nest-temp
+        env:
+          - name: NODE_ENV
+            value: "development"
+          - name: PORT 
+            value: "80"
+      service:
+        ports:
+        - port: 80
+dev:
+  ports:
+  - imageName: app
+    forward:
+    - port: 30800
+      remotePort: 80
+  open:
+  - url: http://localhost:30800
+  sync:
+  - imageName: app
+    disableUpload: true
+    excludePaths:
+    - .git/
+    uploadExcludePaths:
+    - devspace.yaml
+    onUpload:
+      restartContainer: true
+profiles:
+- name: production
+  patches:
+  - op: remove
+    path: images.app.injectRestartHelper
+  - op: remove
+    path: images.app.appendDockerfileInstructions
+- name: interactive
+  patches:
+  - op: add
+    path: dev.interactive
+    value:
+      defaultEnabled: true
+  - op: add
+    path: images.app.entrypoint
+    value:
+    - sleep
+    - "9999999999"
