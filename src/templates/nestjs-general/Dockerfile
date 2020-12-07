@@ -10,5 +10,4 @@ RUN yarn install
 COPY . .
 RUN yarn build
 
-ENTRYPOINT [ "yarn" ]
-CMD ["start:prod"]
+CMD ["yarn", "start:prod"]
