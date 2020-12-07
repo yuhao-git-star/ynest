@@ -41,3 +41,4 @@ swagger-spec-v1.json
 dist/
 
 test/
+report.xml
