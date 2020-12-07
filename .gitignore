@@ -39,3 +39,5 @@ swagger-spec-v1.json
 .devspace/
 
 dist/
+
+test/

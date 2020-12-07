@@ -7,6 +7,8 @@ import * as shell from 'shelljs';
 import * as chalk from 'chalk';
 import * as yargs from 'yargs';
 import * as template from './utils/template';
+import { TemplateConfig } from './TemplateConfig';
+import { CliOptions } from './CliOptions';
 
 const CHOICES = fs.readdirSync(path.join(__dirname, 'templates'));
 
@@ -31,19 +33,6 @@ const QUESTIONS = [
 ];
 
 const CURR_DIR = process.cwd();
-
-export interface TemplateConfig {
-  files?: string[]
-  postMessage?: string
-}
-
-export interface CliOptions {
-  projectName: string
-  templateName: string
-  templatePath: string
-  tartgetPath: string
-  config: TemplateConfig
-}
 
 inquirer.prompt(QUESTIONS)
   .then(answers => {
@@ -71,6 +60,7 @@ inquirer.prompt(QUESTIONS)
     createDirectoryContents(templatePath, projectName, templateConfig);
 
     if (!postProcess(options)) {
+      shell.rm('-rf', options.tartgetPath);
       return;
     }
 
@@ -107,6 +97,7 @@ function getTemplateConfig(templatePath: string): TemplateConfig {
 }
 
 function createProject(projectPath: string) {
+
   if (fs.existsSync(projectPath)) {
     console.log(chalk.red(`Folder ${projectPath} exists. Delete or use another name.`));
     return false;
@@ -120,11 +111,20 @@ function postProcess(options: CliOptions) {
   if (isNode(options)) {
     return postProcessNode(options);
   }
+
+  if (isDart(options)) {
+    return postProcessDart(options);
+  }
+
   return true;
 }
 
 function isNode(options: CliOptions) {
   return fs.existsSync(path.join(options.templatePath, 'package.json'));
+}
+
+function isDart(options: CliOptions) {
+  return options.templateName === 'flutter-gitlab'
 }
 
 function postProcessNode(options: CliOptions) {
@@ -150,6 +150,32 @@ function postProcessNode(options: CliOptions) {
     }
   } else {
     console.log(chalk.red('No yarn or npm found. Cannot run installation.'));
+  }
+
+  return true;
+}
+
+function postProcessDart(options: CliOptions) {
+
+  let cmd = '';
+
+  if (!shell.which('flutter')) {
+    console.log(chalk.red('No flutter found. Cannot run installation.'));
+
+    return false;
+  }
+  cmd += `flutter create ${options.projectName}`
+
+  if (!shell.which('fastlane')) {
+    console.log(chalk.red('No fastlane found. Cannot run installation.'));
+
+    return false;
+  }
+
+  const result = shell.exec(cmd);
+
+  if (result.code !== 0) {
+    return false;
   }
 
   return true;

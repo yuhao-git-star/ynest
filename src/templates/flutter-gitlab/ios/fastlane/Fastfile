@@ -1,0 +1,116 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:ios)
+
+platform :ios do
+
+  before_all do
+    ENV["FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD"] = "kkol-lrqo-aads-ezus"
+    # ENV["FASTLANE_PASSWORD"] = "kkol-lrqo-aads-ezus"
+    sh("pod", "repo", "update")
+  end
+
+  desc "Build and Unit Test"
+  lane :test do
+    # Return the number of commits in current git branch
+    build_number = number_of_commits(all: true)
+    Dir.chdir "../.." do
+      sh("flutter", "packages", "get")
+      sh("flutter", "clean")
+      sh("flutter", "build", "ios", "-t", "lib/main_staging.dart", "--flavor=Staging", "--no-codesign", "--build-number=#{ENV['CI_PIPELINE_ID']}")
+    end
+  end
+
+  desc "Push a new beta build to TestFlight"
+  lane :beta do
+    # Return the number of commits in current git branch
+    build_number = number_of_commits(all: true)
+    copy_config_file("Staging")
+    Dir.chdir "../.." do
+      sh("flutter", "packages", "get")
+      sh("flutter", "clean")
+      sh("flutter", "build", "ios", "-t", "lib/main_staging.dart", "--flavor=Staging", "--no-codesign", "--build-number=#{ENV['CI_PIPELINE_ID']}")
+    end
+    sigh(force: true)
+    build_app(workspace: "Runner.xcworkspace", scheme: "Staging", configuration: "Release-Staging")
+    # upload_to_testflight
+    pilot(skip_waiting_for_build_processing: true)
+    # post_slack_message("Staging version #{ENV['CI_PIPELINE_ID']}")
+  end
+
+  desc "Push a new beta build to TestFlight"
+  lane :betagitlab do
+    # Return the number of commits in current git branch
+    build_number = number_of_commits(all: true)
+    copy_config_file("Staging")
+    Dir.chdir "../.." do
+      sh("flutter", "packages", "get")
+      sh("flutter", "clean")
+      sh("flutter", "build", "ios", "-t", "lib/main_staging.dart", "--flavor=Staging", "--no-codesign", "--build-number=#{ENV['CI_PIPELINE_ID']}")
+    end
+    sigh(force: true)
+    build_app(workspace: "Runner.xcworkspace", scheme: "Staging", configuration: "Release-Staging")
+    # upload_to_testflight
+    pilot(skip_waiting_for_build_processing: true)
+    # post_slack_message("Staging version #{ENV['CI_PIPELINE_ID']}")
+  end
+
+  desc "Push a new beta build to TestFlight"
+  lane :release do
+    # Return the number of commits in current git branch
+    build_number = number_of_commits(all: true)
+    copy_config_file("Prod")
+    Dir.chdir "../.." do
+      sh("flutter", "packages", "get")
+      sh("flutter", "clean")
+      sh("flutter", "build", "ios", "-t", "lib/main_prod.dart", "--flavor=Prod", "--no-codesign", "--build-number=#{ENV['CI_PIPELINE_ID']}")
+    end
+    sigh(force: true)
+    build_app(workspace: "Runner.xcworkspace", scheme: "Prod", configuration: "Release-Prod")
+    # upload_to_testflight
+    pilot(skip_waiting_for_build_processing: true)
+    # post_slack_message("Prod version #{ENV['CI_PIPELINE_ID']}")
+  end
+
+  desc "Push a new beta build to TestFlight"
+  lane :releasegitlab do
+    # Return the number of commits in current git branch
+    build_number = number_of_commits(all: true)
+    copy_config_file("Prod")
+    Dir.chdir "../.." do
+      sh("flutter", "packages", "get")
+      sh("flutter", "clean")
+      sh("flutter", "build", "ios", "-t", "lib/main_prod.dart", "--flavor=Prod", "--no-codesign", "--build-number=#{ENV['CI_PIPELINE_ID']}")
+    end
+    sigh(force: true)
+    build_app(workspace: "Runner.xcworkspace", scheme: "Prod", configuration: "Release-Prod")
+    # upload_to_testflight
+    pilot(skip_waiting_for_build_processing: true)
+    # post_slack_message("Prod version #{ENV['CI_PIPELINE_ID']}")
+  end
+end
+
+def post_slack_message(message)
+  slack(
+    message: "App successfully uploaded to iTunesConnect. #{message}",
+    success: true,
+    slack_url: "https://hooks.slack.com/services/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"
+  )
+end
+
+def copy_config_file(env)
+  sh("cp", "../Runner/GoogleServices/GoogleService-Info-#{env}.plist", "../Runner/GoogleService-Info.plist")
+end
