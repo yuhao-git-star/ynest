@@ -20,7 +20,7 @@
   "scripts": {
     "start": "ts-node src/index.ts",
     "build": "tsc && shx rm -rf dist/templates && shx cp -r src/templates dist",
-    "release": "np"
+    "release": "yarn build && np"
   },
   "devDependencies": {
     "@types/ejs": "^3.0.5",
