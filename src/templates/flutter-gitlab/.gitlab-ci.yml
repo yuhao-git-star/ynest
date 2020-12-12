@@ -1,0 +1,154 @@
+stages:
+  - test_coverage
+  - unit_tests
+  - develop
+  - master
+
+variables:
+  LANG: "en_US.UTF-8"
+  LC_ALL: "en_US.UTF-8"
+  GIT_SUBMODULE_STRATEGY: normal
+  GIT_DEPTH: 0
+
+test_coverage:
+  stage: test_coverage
+  before_script:
+  - flutter pub get
+  - flutter clean
+  - flutter --version
+
+  script:
+    - flutter test --coverage
+    - lcov --list coverage/lcov.info
+    - genhtml coverage/lcov.info --output=coverage
+  artifacts:
+    paths:
+      - coverage
+    expire_in: 10 days
+  tags:
+    - flutter
+  only:
+    - merge_requests
+    - develop  
+
+unit_tests_iOS:
+  tags:
+    - flutter
+  stage: unit_tests
+  script:
+    - cd ios && fastlane test --verbose
+  only:
+    - branches
+  except:
+    - tags
+    - /^release*/
+    - release
+  allow_failure: false
+
+unit_tests_android:
+  tags:
+    - flutter
+  stage: unit_tests
+  script:
+    - cd android && fastlane test --verbose
+  only:
+    - branches
+  except:
+    - tags
+    - /^release*/
+    - release
+  allow_failure: false
+
+develop_iOS:
+  tags:
+    - flutter
+  stage: develop
+  script:
+    - cd ios && fastlane beta --verbose
+  only:
+    - /^develop-.*/
+    - develop
+  environment:
+    name: develop
+
+develop_android:
+  tags:
+    - flutter
+  stage: develop
+  script:
+    - cd android && fastlane beta --verbose
+  only:
+    - /^develop-.*/
+    - develop
+  environment:
+    name: develop_android
+
+developrelease_iOS:
+  tags:
+    - flutter
+  stage: develop
+  script:
+    - cd ios && fastlane betagitlab --verbose
+  only:
+    - /^release*/
+    - release
+  environment:
+    name: develop
+
+developrelease_android:
+  tags:
+    - flutter
+  stage: develop
+  script:
+    - cd android && fastlane betagitlab --verbose
+  only:
+    - /^release*/
+    - release
+  environment:
+    name: develop_android
+
+master_iOS:
+  tags:
+    - flutter
+  stage: master
+  script:
+    - cd ios && fastlane release --verbose
+  only:
+    - master
+  environment:
+    name: production
+
+master_android:
+  tags:
+    - flutter
+  stage: master
+  script:
+    - cd android && fastlane release --verbose
+  only:
+    - master
+  environment:
+    name: production_android
+
+masterrelease_iOS:
+  tags:
+    - flutter
+  stage: master
+  script:
+    - cd ios && fastlane releasegitlab --verbose
+  only:
+    - /^release*/
+    - release
+  environment:
+    name: production
+
+masterrelease_android:
+  tags:
+    - flutter
+  stage: master
+  script:
+    - cd android && fastlane releasegitlab --verbose
+  only:
+    - /^release*/
+    - release
+  environment:
+    name: production_android

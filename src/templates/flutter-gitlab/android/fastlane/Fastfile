@@ -1,0 +1,134 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:android)
+
+platform :android do
+
+  desc "Build and Unit Test"
+  lane :test do
+    # Return the number of commits in current git branch
+    build_number = number_of_commits(all: true)
+        Dir.chdir "../.." do
+          sh("flutter", "packages", "get")
+          sh("flutter", "clean")
+          sh("flutter", "build", "apk", "-t", "lib/main_staging.dart", "--flavor=Staging", "--build-number=#{build_number}")
+    end
+  end
+
+  desc "Submit a new build to apk"
+    lane :betabuild do
+        # Return the number of commits in current git branch
+        build_number = number_of_commits(all: true)
+        ci_pipeline_id = ENV['CI_PIPELINE_ID']
+        if !ci_pipeline_id.nil? && !ci_pipeline_id.empty?
+          build_number = ci_pipeline_id
+        end
+        Dir.chdir "../.." do
+          sh("flutter", "packages", "get")
+          sh("flutter", "clean")
+          sh("flutter", "build", "appbundle", "-t", "lib/main_staging.dart", "--flavor=Staging", "--build-number=#{build_number}")
+        end
+  end
+
+  desc "Submit a new build to apk"
+    lane :beta do
+        # Return the number of commits in current git branch
+        build_number = number_of_commits(all: true)
+        ci_pipeline_id = ENV['CI_PIPELINE_ID']
+        if !ci_pipeline_id.nil? && !ci_pipeline_id.empty?
+          build_number = ci_pipeline_id
+        end
+        Dir.chdir "../.." do
+          sh("flutter", "packages", "get")
+          sh("flutter", "clean")
+          sh("flutter", "build", "appbundle", "-t", "lib/main_staging.dart", "--flavor=Staging", "--build-number=#{build_number}")
+        end
+      supply(track: "internal", aab:"../build/app/outputs/bundle/StagingRelease/app-Staging-release.aab", rollout: "1.0",
+        skip_upload_images: true,
+        skip_upload_screenshots: true,
+        skip_upload_metadata: true,)
+  end
+
+  desc "Push a new beta build to apk"
+  lane :betagitlab do
+    # Return the number of commits in current git branch
+        build_number = number_of_commits(all: true)
+        ci_pipeline_id = ENV['CI_PIPELINE_ID']
+        if !ci_pipeline_id.nil? && !ci_pipeline_id.empty?
+          build_number = ci_pipeline_id
+        end
+        Dir.chdir "../.." do
+          sh("flutter", "packages", "get")
+          sh("flutter", "clean")
+          sh("flutter", "build", "appbundle", "-t", "lib/main_staging.dart", "--flavor=Staging", "--build-number=#{build_number}")
+    end
+
+    supply(track: "internal", aab:"../build/app/outputs/bundle/StagingRelease/app-Staging-release.aab", rollout: "1.0",
+      skip_upload_images: true,
+      skip_upload_screenshots: true,
+      skip_upload_metadata: true,)
+  end
+
+  desc "Submit a new build to Internal Track on Play"
+    lane :releasebuild do
+        # Return the number of commits in current git branch
+        build_number = number_of_commits(all: true)
+        ci_pipeline_id = ENV['CI_PIPELINE_ID']
+        if !ci_pipeline_id.nil? && !ci_pipeline_id.empty?
+          build_number = ci_pipeline_id
+        end
+        Dir.chdir "../.." do
+          sh("flutter", "packages", "get")
+          sh("flutter", "clean")
+          sh("flutter", "build", "appbundle", "-t", "lib/main_prod.dart", "--flavor=Prod", "--build-number=#{build_number}")
+        end
+    end
+
+  desc "Submit a new build to Internal Track on Play"
+    lane :release do
+        # Return the number of commits in current git branch
+        build_number = number_of_commits(all: true)
+        ci_pipeline_id = ENV['CI_PIPELINE_ID']
+        if !ci_pipeline_id.nil? && !ci_pipeline_id.empty?
+          build_number = ci_pipeline_id
+        end
+        Dir.chdir "../.." do
+          sh("flutter", "packages", "get")
+          sh("flutter", "clean")
+          sh("flutter", "build", "appbundle", "-t", "lib/main_prod.dart", "--flavor=Prod", "--build-number=#{build_number}")
+        end
+        supply(track: "internal", aab:"../build/app/outputs/bundle/ProdRelease/app-Prod-release.aab", rollout: "1.0",
+          skip_upload_images: true,
+          skip_upload_screenshots: true,
+          skip_upload_metadata: true,)
+    end
+
+    desc "Submit a new build to Internal Track on Play"
+    lane :releasegitlab do
+        # Return the number of commits in current git branch
+        build_number = number_of_commits(all: true)
+        ci_pipeline_id = ENV['CI_PIPELINE_ID']
+        if !ci_pipeline_id.nil? && !ci_pipeline_id.empty?
+          build_number = ci_pipeline_id
+        end
+        Dir.chdir "../.." do
+          sh("flutter", "packages", "get")
+          sh("flutter", "clean")
+          sh("flutter", "build", "apk", "-t", "lib/main_prod.dart", "--flavor=Prod", "--build-number=#{build_number}")
+        end
+      # supply(track: "internal", aab:"../build/app/outputs/bundle/release/app.aab", rollout: "1.0")
+    end
+end

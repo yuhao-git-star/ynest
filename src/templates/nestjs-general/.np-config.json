@@ -1,0 +1,7 @@
+{
+	"yarn": true,
+	"contents": "dist",
+	"publishConfig": {
+		"access": "public"
+	}
+}

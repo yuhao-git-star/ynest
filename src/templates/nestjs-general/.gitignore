@@ -1,4 +1,5 @@
 # compiled output
+/dist
 /node_modules
 
 # Logs
@@ -37,8 +38,3 @@ swagger-spec-v1.json
 
 # Ignore DevSpace cache and log folder
 .devspace/
-
-dist/
-
-test/
-report.xml
