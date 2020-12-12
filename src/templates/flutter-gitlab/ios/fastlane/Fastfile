@@ -18,8 +18,8 @@ default_platform(:ios)
 platform :ios do
 
   before_all do
-    ENV["FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD"] = "kkol-lrqo-aads-ezus"
-    # ENV["FASTLANE_PASSWORD"] = "kkol-lrqo-aads-ezus"
+    ENV["FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD"] = ""
+    # ENV["FASTLANE_PASSWORD"] = ""
     sh("pod", "repo", "update")
   end
 
