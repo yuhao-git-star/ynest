@@ -12,6 +12,7 @@ import { utilities as nestWinstonModuleUtilities, WinstonModule } from 'nest-win
 import { APPWinstonModule } from './winston/appwinston.module';
 import { APP_FILTER } from '@nestjs/core';
 import { HttpFilterFilter } from './filter/http-filter.filter';
+import { ScheduleModule } from '@nestjs/schedule';
 
 const routes: Routes = [
   {
@@ -28,6 +29,7 @@ const routes: Routes = [
   imports: [
     ConfigModule,
     APPWinstonModule,
+    ScheduleModule.forRoot(),
     // TypeOrmConfigModule,
     // RedisClientModule,
     EventsModule,
