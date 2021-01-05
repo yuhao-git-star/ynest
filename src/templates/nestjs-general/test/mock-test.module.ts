@@ -22,7 +22,7 @@ const providers = [
 
 @Module({
   imports: [
-    MockTestServiceModule
+    MockTestServiceModule,
   ],
   providers: providers,
   exports: providers,

@@ -7,7 +7,7 @@ const providers = [
 ]
 
 const imports = [
-  AuthModule
+
 ]
 
 @Module({
