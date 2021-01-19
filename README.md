@@ -1,10 +1,29 @@
-# yu-nestjs-temp-create
+---
+description: 本篇文章將介紹如何快速開始 yNest
+---
 
-`npx @klearthinkk/create-ktnest-temp {your project name}`
+# 快速開始
 
-`yarn create @klearthinkk/ktnest-temp {your project name}`
+## Getting Super Powers
 
-## it have list template
+Becoming a super hero is a fairly straight forward process:
 
-1. **flutter-gitlab** can set up all flutter env setting, gitlab ci and fastlane
-2. **nestjs-general** can set up lastest nest.js 7 with devspace, cdk8s, kubernetes, docker, docker compose and typescript sample cods.
+```
+$ give me super-powers
+```
+
+{% hint style="info" %}
+ Super-powers are granted randomly so please submit an issue if you're not happy with yours.
+{% endhint %}
+
+Once you're strong enough, save the world:
+
+{% code title="hello.sh" %}
+```bash
+# Ain't no code for that yet, sorry
+echo 'You got to trust me on this, I saved the world'
+```
+{% endcode %}
+
+
+
