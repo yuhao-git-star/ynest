@@ -17,28 +17,29 @@ description: 本篇文章將介紹 flutter-gitlab 的基本概念
 
 ├── android
 
-│   └── fastlane - Android fastlane 配置
+│ └── fastlane - Android fastlane 配置
 
-│       ├── Appfile
+│ ├── Appfile
 
-│       ├── Fastfile
+│ ├── Fastfile
 
-│       └── README.md
+│ └── README.md
 
 ├── ios - ios fastlane 配置
 
-│   └── fastlane
+│ └── fastlane
 
-│       ├── Appfile
+│ ├── Appfile
 
-│       ├── Fastfile
+│ ├── Fastfile
 
-│       └── README.md
+│ └── README.md
 
 └── lib - 不同環境的入口配置
 
 ├── env.dart
 
-├── main_prod.dart
+├── main\_prod.dart
 
-└── main_staging.dart
+└── main\_staging.dart
+

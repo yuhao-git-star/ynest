@@ -8,7 +8,8 @@ description: 本篇文章將介紹如何快速開始 yNest
 
 ynest, 是一個幫助項目開始的腳手架，目前包含了 nest.js、flutter 項目，內置 CI/CD 等自動化腳本設定。
 
-[文件位置](https://github.com/yasuoyuhao/ynest/tree/655b6c2ed729c1c5e126a6b3348eb3aa34972644/yasuoyuhao.gitbook.io/ynest/README.md)
+[文件位置](https://github.com/yasuoyuhao/ynest/tree/655b6c2ed729c1c5e126a6b3348eb3aa34972644/yasuoyuhao.gitbook.io/ynest/README.md)  
+[原始碼位置](https://github.com/yasuoyuhao/ynest)
 
 ## 基本指令
 
