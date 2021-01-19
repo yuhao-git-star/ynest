@@ -27,7 +27,9 @@ description: 本篇文章將介紹 nests-general 的基本概念
 ├── cdk-k8s - 協助您撰寫 K8s yaml 部署
 
 ├── cloudbuild.yaml - Google Cloud Build 配置
+
 ├── devspace.yaml - devspace 配置
+
 ├── docker-compose.yml - docker-compose 配置
 
 ├── src - 主要程式碼位置
