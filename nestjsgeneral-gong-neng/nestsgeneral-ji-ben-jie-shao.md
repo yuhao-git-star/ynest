@@ -15,6 +15,7 @@ description: 本篇文章將介紹 nests-general 的基本概念
 ## 要求
 
 * `node version >= 12`
+* 如果使用 `docker` 功能，需安裝 `docker & docker-compose`
 
 ## 檔案結構
 
