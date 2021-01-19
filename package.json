@@ -1,5 +1,5 @@
 {
-  "name": "@klearthinkk/create-ktnest-temp",
+  "name": "@klearthinkk/create-ynest",
   "version": "1.0.10",
   "description": "new nest.js project from klearthinkk",
   "keywords": [
@@ -24,11 +24,11 @@
   "main": "dist/index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yasuoyuhao/nest.js-temp"
+    "url": "https://github.com/yasuoyuhao/ynest"
   },
   "author": "yasuoyuhao <yasuoyuhao@klearthink.com>",
   "bin": {
-    "create-ktnest-temp": "./dist/index.js"
+    "create-ynest": "./dist/index.js"
   },
   "license": "MIT",
   "private": false,
